@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Management System</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Navigation Header -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-content">
+                <h1 class="nav-brand">ProductHub</h1>
+                <div class="nav-links">
+                    <button class="nav-link active" data-page="display">Products</button>
+                    <button class="nav-link" data-page="management">Management</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Product Display Page -->
+    <div id="display-page" class="page active">
+        <div class="container">
+            <div class="page-header">
+                <h2>Our Products</h2>
+                <div class="product-stats">
+                    <span class="status status--info">Total Products: <span id="product-count">0</span></span>
+                </div>
+            </div>
+            
+            <!-- Search and Filter Controls -->
+            <div class="search-controls">
+                <div class="search-group">
+                    <input type="text" id="search-input" class="form-control" placeholder="Search products by name or category...">
+                </div>
+                <div class="filter-group">
+                    <select id="sort-select" class="form-control">
+                        <option value="name">Sort by Name</option>
+                        <option value="price">Sort by Price</option>
+                        <option value="dateAdded">Sort by Date Added</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Products Grid -->
+            <div id="products-grid" class="products-grid">
+                <!-- Products will be dynamically inserted here -->
+            </div>
+
+            <!-- Empty State -->
+            <div id="empty-state" class="empty-state hidden">
+                <h3>No products found</h3>
+                <p>Try adjusting your search criteria or add some products from the management page.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Product Management Page -->
+    <div id="management-page" class="page">
+        <div class="container">
+            <div class="page-header">
+                <h2>Product Management</h2>
+                <div class="deployment-info">
+                    <span class="status status--success">Connected to MongoDB Atlas</span>
+                    <button id="seed-database" class="btn btn--secondary btn--sm">Seed Database</button>
+                </div>
+            </div>
+
+            <!-- Add Product Form -->
+            <div class="card">
+                <div class="card__body">
+                    <h3>Add New Product</h3>
+                    <form id="product-form">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-label" for="product-name">Product Name *</label>
+                                <input type="text" id="product-name" class="form-control" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label" for="product-category">Category *</label>
+                                <select id="product-category" class="form-control" required>
+                                    <option value="">Select Category</option>
+                                    <option value="Electronics">Electronics</option>
+                                    <option value="Kitchen">Kitchen</option>
+                                    <option value="Fitness">Fitness</option>
+                                    <option value="Office">Office</option>
+                                    <option value="Sports">Sports</option>
+                                    <option value="Home">Home</option>
+                                    <option value="Books">Books</option>
+                                    <option value="Clothing">Clothing</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label" for="product-price">Price ($) *</label>
+                                <input type="number" id="product-price" class="form-control" min="0" step="0.01" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label" for="product-stock">Stock Quantity *</label>
+                                <input type="number" id="product-stock" class="form-control" min="0" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="product-description">Description *</label>
+                            <textarea id="product-description" class="form-control" rows="3" required></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="product-image">Image URL</label>
+                            <input type="url" id="product-image" class="form-control" placeholder="https://example.com/image.jpg">
+                        </div>
+                        
+                        <button type="submit" class="btn btn--primary">Add Product</button>
+                        <button type="button" id="cancel-edit" class="btn btn--secondary hidden">Cancel Edit</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Products Table -->
+            <div class="card">
+                <div class="card__body">
+                    <h3>Manage Products</h3>
+                    <div class="table-container">
+                        <table id="products-table" class="products-table">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Category</th>
+                                    <th>Price</th>
+                                    <th>Stock</th>
+                                    <th>Description</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="products-table-body">
+                                <!-- Products will be dynamically inserted here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MongoDB Deployment Info -->
+            <div class="card">
+                <div class="card__body">
+                    <h3>MongoDB Atlas Integration</h3>
+                    <div class="deployment-guide">
+                        <p>This application is integrated with MongoDB Atlas:</p>
+                        <ul>
+                            <li>Products are stored in MongoDB Atlas cloud database</li>
+                            <li>Backend API handles CRUD operations</li>
+                            <li>Authentication can be added for production</li>
+                            <li>Deployed on Vercel's serverless infrastructure</li>
+                        </ul>
+                        <p>For development: Create a <code>.env</code> file with your <code>MONGODB_URI</code> connection string</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div id="delete-modal" class="modal hidden">
+        <div class="modal-content">
+            <h3>Confirm Delete</h3>
+            <p>Are you sure you want to delete this product? This action cannot be undone.</p>
+            <div class="modal-actions">
+                <button id="confirm-delete" class="btn btn--primary">Delete</button>
+                <button id="cancel-delete" class="btn btn--secondary">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <script src="app.js"></script>
+</body>
+</html>
